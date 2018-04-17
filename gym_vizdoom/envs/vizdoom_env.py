@@ -30,14 +30,13 @@ DEFAULT_RANDOM_SEED = 100
 DEFAULT_CONFIG = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/default.cfg'
 TRAIN_WAD = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/D3_exploration_train.wad_manymaps.wad_exploration.wad'
 
-# TODO: handle carefully for vectorized env: they should get different seeds
-np.random.seed(DEFAULT_RANDOM_SEED)
-random.seed(DEFAULT_RANDOM_SEED)
-
 class VizdoomEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
   def __init__(self):
+    # TODO: improve seeding
+    np.random.seed(DEFAULT_RANDOM_SEED)
+    random.seed(DEFAULT_RANDOM_SEED)
     self._vizdoom_setup(DEFAULT_RANDOM_SEED, TRAIN_WAD)
     self.action_space = spaces.Discrete(ACTION_CLASSES)
     self.observation_space = spaces.Box(np.array([0]), np.array([1]), dtype=np.float32)
