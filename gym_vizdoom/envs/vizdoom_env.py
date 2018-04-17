@@ -43,7 +43,9 @@ class VizdoomEnv(gym.Env):
 
   def step(self, action):
     reward = self._make_action(action)
-    return self._get_state(), reward, self._is_done(), {}
+    done = self._is_done()
+    current_state = self._get_state() if not done else None
+    return current_state, reward, done, {}
 
   def reset(self):
     self.game.set_doom_map(MAP_NAME_TEMPLATE % random.randint(MIN_RANDOM_TEXTURE_MAP_INDEX,
