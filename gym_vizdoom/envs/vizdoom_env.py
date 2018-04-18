@@ -24,9 +24,12 @@ ACTION_CLASSES = len(ACTIONS_LIST)
 MIN_RANDOM_TEXTURE_MAP_INDEX = 2
 MAX_RANDOM_TEXTURE_MAP_INDEX = 401
 TRAIN_REPEAT = 4
+NET_WIDTH = 160
+NET_HEIGHT = 120
+NET_CHANNELS = 3
+STATE_AFTER_GAME_END = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.uint8)
 
 # general
-DEFAULT_RANDOM_SEED = 100
 DEFAULT_CONFIG = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/default.cfg'
 TRAIN_WAD = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/D3_exploration_train.wad_manymaps.wad_exploration.wad'
 
@@ -34,35 +37,46 @@ class VizdoomEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
   def __init__(self):
-    # TODO: improve seeding
-    np.random.seed(DEFAULT_RANDOM_SEED)
-    random.seed(DEFAULT_RANDOM_SEED)
-    self._vizdoom_setup(DEFAULT_RANDOM_SEED, TRAIN_WAD)
+    self._vizdoom_setup(TRAIN_WAD)
     self.action_space = spaces.Discrete(ACTION_CLASSES)
     self.observation_space = spaces.Box(np.array([0]), np.array([1]), dtype=np.float32)
+    self.episode_reward = 0.0
+    self.seed()
+    self.reset()
+
+  def seed(self, seed=None):
+    if seed is not None:
+      self._vizdoom_seed(seed)
+    self.np_random, seed = seeding.np_random(seed)
+    return [seed]
 
   def step(self, action):
     reward = self._make_action(action)
+    self.episode_reward += reward
     done = self._is_done()
-    current_state = self._get_state() if not done else None
+    current_state = self._get_state() if not done else STATE_AFTER_GAME_END
     return current_state, reward, done, {}
 
   def reset(self):
-    self.game.set_doom_map(MAP_NAME_TEMPLATE % random.randint(MIN_RANDOM_TEXTURE_MAP_INDEX,
-                                                              MAX_RANDOM_TEXTURE_MAP_INDEX))
+    print('Episode reward: {}'.format(self.episode_reward))
+    self.episode_reward = 0.0
+    self.game.set_doom_map(MAP_NAME_TEMPLATE % self.np_random.randint(MIN_RANDOM_TEXTURE_MAP_INDEX,
+                                                                      MAX_RANDOM_TEXTURE_MAP_INDEX + 1))
     self.game.new_episode()
     return self._get_state()
 
   def render(self, mode='human', close=False):
     pass
 
-  def _vizdoom_setup(self, seed, wad):
+  def _vizdoom_setup(self, wad):
     game = DoomGame()
     game.load_config(DEFAULT_CONFIG)
     game.set_doom_scenario_path(wad)
-    game.set_seed(seed)
     game.init()
     self.game = game
+
+  def _vizdoom_seed(self, seed):
+    self.game.set_seed(seed)
 
   def _get_state(self):
     return self.game.get_state().screen_buffer.transpose(VIZDOOM_TO_TF)
