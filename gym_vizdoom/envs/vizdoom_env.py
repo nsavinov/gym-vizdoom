@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 import gym
 from gym import error, spaces, utils
@@ -34,7 +35,7 @@ DEFAULT_CONFIG = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/default.c
 TRAIN_WAD = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/D3_exploration_train.wad_manymaps.wad_exploration.wad'
 
 class VizdoomEnv(gym.Env):
-  metadata = {'render.modes': ['human']}
+  metadata = {'render.modes': ['human', 'rgb_array']}
 
   def __init__(self):
     self._vizdoom_setup(TRAIN_WAD)
@@ -55,6 +56,7 @@ class VizdoomEnv(gym.Env):
     self.episode_reward += reward
     done = self._is_done()
     current_state = self._get_state() if not done else STATE_AFTER_GAME_END
+    self.current_state = current_state
     return current_state, reward, done, {}
 
   def reset(self):
@@ -65,8 +67,16 @@ class VizdoomEnv(gym.Env):
     self.game.new_episode()
     return self._get_state()
 
-  def render(self, mode='human', close=False):
-    pass
+  def render(self, mode='rgb_array'):
+    if mode == 'rgb_array':
+      return self.current_state
+    elif mode == 'human':
+      plt.figure(1)
+      plt.clf()
+      plt.imshow(self.render(mode='rgb_array'))
+      plt.pause(0.001)
+    else:
+      super(VizdoomEnv, self).render(mode=mode)
 
   def _vizdoom_setup(self, wad):
     game = DoomGame()
