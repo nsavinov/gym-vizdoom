@@ -54,9 +54,7 @@ class VizdoomEnv(gym.Env):
   def step(self, action):
     reward = self._make_action(action)
     self.episode_reward += reward
-    done = self._is_done()
-    current_state = self._get_state() if not done else STATE_AFTER_GAME_END
-    self.current_state = current_state
+    current_state, done = self._safe_get_set_state()
     return current_state, reward, done, {}
 
   def reset(self):
@@ -65,16 +63,18 @@ class VizdoomEnv(gym.Env):
     self.game.set_doom_map(MAP_NAME_TEMPLATE % self.np_random.randint(MIN_RANDOM_TEXTURE_MAP_INDEX,
                                                                       MAX_RANDOM_TEXTURE_MAP_INDEX + 1))
     self.game.new_episode()
-    return self._get_state()
+    current_state, _ = self._safe_get_set_state()
+    return current_state
 
   def render(self, mode='rgb_array'):
-    if mode == 'rgb_array':
+    if mode in ['rgb_array', 'human']:
       return self.current_state
-    elif mode == 'human':
-      plt.figure(1)
-      plt.clf()
-      plt.imshow(self.render(mode='rgb_array'))
-      plt.pause(0.001)
+    # elif mode == 'human':
+    #   raise Exception('Should not be here!')
+      # plt.figure(1)
+      # plt.clf()
+      # plt.imshow(self.render(mode='rgb_array'))
+      # plt.pause(0.001)
     else:
       super(VizdoomEnv, self).render(mode=mode)
 
@@ -87,6 +87,13 @@ class VizdoomEnv(gym.Env):
 
   def _vizdoom_seed(self, seed):
     self.game.set_seed(seed)
+
+  def _safe_get_set_state(self):
+    done = self._is_done()
+    current_state = self._get_state() if not done else STATE_AFTER_GAME_END
+    self.current_state = current_state
+    # self.render(mode='human')
+    return current_state, done
 
   def _get_state(self):
     return self.game.get_state().screen_buffer.transpose(VIZDOOM_TO_TF)
