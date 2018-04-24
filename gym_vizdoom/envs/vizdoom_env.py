@@ -40,7 +40,7 @@ class VizdoomEnv(gym.Env):
   def __init__(self):
     self._vizdoom_setup(TRAIN_WAD)
     self.action_space = spaces.Discrete(ACTION_CLASSES)
-    self.observation_space = spaces.Box(np.array([0]), np.array([1]), dtype=np.float32)
+    self.observation_space = spaces.Box(0, 255, [NET_HEIGHT, NET_WIDTH, NET_CHANNELS], dtype=np.float32)
     self.episode_reward = 0.0
     self.seed()
     self.reset()
