@@ -29,6 +29,7 @@ NET_WIDTH = 160
 NET_HEIGHT = 120
 NET_CHANNELS = 3
 STATE_AFTER_GAME_END = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.uint8)
+MAX_STEP = 10000
 
 # general
 DEFAULT_CONFIG = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/default.cfg'
@@ -55,6 +56,9 @@ class VizdoomEnv(gym.Env):
     reward = self._make_action(action)
     self.episode_reward += reward
     current_state, done = self._safe_get_set_state()
+    self.step_counter += 1
+    if self.step_counter >= MAX_STEP:
+      done = True
     return current_state, reward, done, {}
 
   def reset(self):
@@ -64,19 +68,21 @@ class VizdoomEnv(gym.Env):
                                                                       MAX_RANDOM_TEXTURE_MAP_INDEX + 1))
     self.game.new_episode()
     current_state, _ = self._safe_get_set_state()
+    self.step_counter = 0
     return current_state
 
   def render(self, mode='rgb_array'):
+    # self.show_human()
     if mode in ['rgb_array', 'human']:
       return self.current_state
-    # elif mode == 'human':
-    #   raise Exception('Should not be here!')
-      # plt.figure(1)
-      # plt.clf()
-      # plt.imshow(self.render(mode='rgb_array'))
-      # plt.pause(0.001)
     else:
       super(VizdoomEnv, self).render(mode=mode)
+
+  def show_human(self):
+    plt.figure(1)
+    plt.clf()
+    plt.imshow(self.render(mode='rgb_array'))
+    plt.pause(0.001)
 
   def _vizdoom_setup(self, wad):
     game = DoomGame()
