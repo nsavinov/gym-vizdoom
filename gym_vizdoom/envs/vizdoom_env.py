@@ -29,7 +29,7 @@ NET_WIDTH = 160
 NET_HEIGHT = 120
 NET_CHANNELS = 3
 STATE_AFTER_GAME_END = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.uint8)
-MAX_STEP = 10000
+MAX_STEP = 2500
 
 # general
 DEFAULT_CONFIG = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/default.cfg'
