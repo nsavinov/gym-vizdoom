@@ -17,8 +17,13 @@ MOVE_RIGHT = [0, 1, 0, 0, 0, 0, 0]
 STAY_IDLE = [0, 0, 0, 0, 0, 0, 0]
 TURN_LEFT = [0, 0, 0, 0, 0, 1, 0]
 TURN_RIGHT = [0, 0, 0, 0, 0, 0, 1]
-ACTIONS_LIST = [MOVE_FORWARD, MOVE_BACKWARD, MOVE_LEFT, MOVE_RIGHT, STAY_IDLE, TURN_LEFT, TURN_RIGHT]
-ACTION_NAMES = ['MOVE_FORWARD', 'MOVE_BACKWARD', 'MOVE_LEFT', 'MOVE_RIGHT', 'STAY_IDLE', 'TURN_LEFT', 'TURN_RIGHT']
+# ACTIONS_LIST = [MOVE_FORWARD, MOVE_BACKWARD, MOVE_LEFT, MOVE_RIGHT, STAY_IDLE, TURN_LEFT, TURN_RIGHT]
+# ACTION_NAMES = ['MOVE_FORWARD', 'MOVE_BACKWARD', 'MOVE_LEFT', 'MOVE_RIGHT', 'STAY_IDLE', 'TURN_LEFT', 'TURN_RIGHT']
+# ACTIONS_LIST = [MOVE_FORWARD, MOVE_BACKWARD, MOVE_LEFT, MOVE_RIGHT]
+# ACTION_NAMES = ['MOVE_FORWARD', 'MOVE_BACKWARD', 'MOVE_LEFT', 'MOVE_RIGHT']
+ACTIONS_LIST = [MOVE_FORWARD, TURN_LEFT, TURN_RIGHT]
+ACTION_NAMES = ['MOVE_FORWARD', 'TURN_LEFT', 'TURN_RIGHT']
+
 WAIT_BEFORE_START_TICS = 140
 VIZDOOM_TO_TF = [1, 2, 0]
 ACTION_CLASSES = len(ACTIONS_LIST)
@@ -29,7 +34,7 @@ NET_WIDTH = 160
 NET_HEIGHT = 120
 NET_CHANNELS = 3
 STATE_AFTER_GAME_END = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.uint8)
-MAX_STEP = 2500
+MAX_STEP = 1000 #2500
 
 # general
 DEFAULT_CONFIG = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/default.cfg'
@@ -62,7 +67,7 @@ class VizdoomEnv(gym.Env):
     return current_state, reward, done, {}
 
   def reset(self):
-    print('Episode reward: {}'.format(self.episode_reward))
+    # print('Episode reward: {}'.format(self.episode_reward))
     self.episode_reward = 0.0
     self.game.set_doom_map(MAP_NAME_TEMPLATE % self.np_random.randint(MIN_RANDOM_TEXTURE_MAP_INDEX,
                                                                       MAX_RANDOM_TEXTURE_MAP_INDEX + 1))
