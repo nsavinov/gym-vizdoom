@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import random
 import matplotlib.pyplot as plt
@@ -37,8 +38,8 @@ STATE_AFTER_GAME_END = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.
 MAX_STEP = 1000 #2500
 
 # general
-DEFAULT_CONFIG = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/default.cfg'
-TRAIN_WAD = '/home/nsavinov/projects/gym-vizdoom/gym_vizdoom/envs/D3_exploration_train.wad_manymaps.wad_exploration.wad'
+DEFAULT_CONFIG = os.path.join(os.path.dirname(__file__), 'default.cfg')
+TRAIN_WAD = os.path.join(os.path.dirname(__file__), 'D3_exploration_train.wad_manymaps.wad_exploration.wad')
 
 class VizdoomEnv(gym.Env):
   metadata = {'render.modes': ['human', 'rgb_array']}
