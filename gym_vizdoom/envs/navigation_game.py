@@ -83,7 +83,7 @@ class NavigationGame:
       self.goal_index = 0
       self.just_started = False
     else:
-      self.goal_index = (self.goal_index + 1) % len(self.goal_locations)
+      self.goal_index = (self.goal_index + 1) % len(self.goal_lmps)
       if self.goal_index == 0:
         self.map_index = (self.map_index + 1) % len(self.maps)
     self._start_map()
@@ -116,10 +116,10 @@ class NavigationGame:
     self.exploration_frames = load_frames_from_lmp(self.game, self.exploration_lmp, REPEAT)
 
   def _load_goal_frames(self):
-    self._vizdoom_setup(self.wad)
     self.goal_frames = []
-    for map_index in range(len(self.maps)):
-      self.goal_frames += [load_goal_frame_from_lmp(self.game, self.goal_lmps[map_index])]
+    for goal_index in range(len(self.goal_lmps)):
+      self._vizdoom_setup(self.wad)
+      self.goal_frames += [load_goal_frame_from_lmp(self.game, self.goal_lmps[goal_index])]
 
   def _vizdoom_setup(self, wad):
     game = DoomGame()
@@ -156,4 +156,4 @@ class NavigationGame:
       self.step_counter = 0
 
   def _get_goal_frame(self):
-    return self.goal_frames[self.map_index]
+    return self.goal_frames[self.goal_index]
