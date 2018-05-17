@@ -59,9 +59,9 @@ class NavigationGame:
                exploration_map=DEFAULT_EXPLORATION_MAP,
                goal_names=DEFAULT_GOAL_NAMES):
     self.observation_shape = [NET_HEIGHT, NET_WIDTH, 2 * NET_CHANNELS]
-    self.wad = osp.join(DATA_PATH, dir, wad)
-    self.exploration_lmp = osp.join(DATA_PATH, dir, exploration_lmp)
-    self.goal_lmps = [osp.join(DATA_PATH, dir, value) for value in goal_lmps]
+    self.wad = osp.join(osp.dirname(__file__), DATA_PATH, dir, wad)
+    self.exploration_lmp = osp.join(osp.dirname(__file__), DATA_PATH, dir, exploration_lmp)
+    self.goal_lmps = [osp.join(osp.dirname(__file__), DATA_PATH, dir, value) for value in goal_lmps]
     self.maps = maps
     self.exploration_map = exploration_map
     self.goal_locations = goal_locations
@@ -82,9 +82,11 @@ class NavigationGame:
       self.map_index = 0
       self.goal_index = 0
       self.just_started = False
-      self.game.new_episode()
     else:
-      self._update_episode()
+      self.goal_index = (self.goal_index + 1) % len(self.goal_locations)
+      if self.goal_index == 0:
+        self.map_index = (self.map_index + 1) % len(self.maps)
+    self._start_map()
     state = self._get_state(done=False)
     return state
 
@@ -98,6 +100,10 @@ class NavigationGame:
     info['coordinates'] = self._get_coordinates(done)
     return state, reward, done, info
     pass
+
+  def _start_map(self):
+    self.game.set_doom_map(self.maps[self.map_index])
+    self.game.new_episode()
 
   def _get_coordinates(self, done):
     if not done:
@@ -128,7 +134,7 @@ class NavigationGame:
       frame = self.exploration_frames[self.step_counter]
       goal_frame = EXPLORATION_GOAL
     state = np.concatenate([frame, goal_frame], axis=2)
-    return state, done
+    return state
 
   def _make_action(self, action_index):
     if self.status == NAVIGATION_STATUS:
@@ -141,12 +147,6 @@ class NavigationGame:
     if self.status == EXPLORATION_STATUS and distance_to_goal <= GOAL_DISTANCE_ALLOWANCE:
       return True
     return False
-
-  def _update_episode(self):
-    self.goal_index = (self.goal_index + 1) % len(self.goal_locations)
-    if self.goal_index == 0:
-      self.map_index = (self.map_index + 1) % len(self.maps)
-    self.game.new_episode()
 
   def _update_status(self):
     if self.status == EXPLORATION_STATUS and self.step_counter >= len(self.exploration_frames):
