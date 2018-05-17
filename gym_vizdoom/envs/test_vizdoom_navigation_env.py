@@ -9,6 +9,8 @@ for i_episode in range(1):
     observation, reward, done, info = env.step(action)
     print(info['step_counter'])
     print(info['status'])
+    print(info['map_index'])
+    print(info['goal_index'])
     if done:
       print('Episode finished!')
       break

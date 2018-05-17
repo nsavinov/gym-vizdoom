@@ -17,7 +17,6 @@ class VizdoomNavigationEnv(gym.Env):
     self.observation_space = spaces.Box(0, 255, self.navigation_game.observation_shape, dtype=np.float32)
     self.episode_reward = 0.0
     self.seed()
-    self.reset()
 
   def seed(self, seed=None):
     if seed is not None:
