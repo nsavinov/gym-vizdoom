@@ -67,9 +67,9 @@ class NavigationGame:
     self.goal_locations = goal_locations
     self.goal_names = goal_names
     self.box = box
-    self._vizdoom_setup(self.wad)
     self._load_exploration_frames()
     self._load_goal_frames()
+    self._vizdoom_setup(self.wad)
     self.just_started = True
 
   def seed(self, seed):
@@ -112,9 +112,11 @@ class NavigationGame:
       return None
 
   def _load_exploration_frames(self):
+    self._vizdoom_setup(self.wad)
     self.exploration_frames = load_frames_from_lmp(self.game, self.exploration_lmp, REPEAT)
 
   def _load_goal_frames(self):
+    self._vizdoom_setup(self.wad)
     self.goal_frames = []
     for map_index in range(len(self.maps)):
       self.goal_frames += [load_goal_frame_from_lmp(self.game, self.goal_lmps[map_index])]
