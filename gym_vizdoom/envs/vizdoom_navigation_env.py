@@ -4,7 +4,7 @@ import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
 
-from gym_vizdoom.envs import ACTION_CLASSES
+from gym_vizdoom.envs.constants import ACTION_CLASSES
 from gym_vizdoom.envs.register_navigation_games import register_navigation_games
 
 NAVIGATION_GAMES = register_navigation_games()
