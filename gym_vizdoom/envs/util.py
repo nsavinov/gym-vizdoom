@@ -1,6 +1,6 @@
 from gym_vizdoom.envs.constants import VIZDOOM_TO_TF
 
-def get_frame(game):
+def real_get_frame(game):
   return game.get_state().screen_buffer.transpose(VIZDOOM_TO_TF)
 
 def get_coordinates(game):
@@ -11,7 +11,7 @@ def load_frames_from_lmp(game, lmp, skip):
   frames = []
   counter = 0
   while not game.is_episode_finished():
-    frame = get_frame(game)
+    frame = real_get_frame(game)
     if counter % skip == 0:
       frames.append(frame)
     game.advance_action()

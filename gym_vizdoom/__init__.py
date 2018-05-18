@@ -1,6 +1,13 @@
 from gym.envs.registration import register
+from gym_vizdoom.envs.register_games import GAMES
 
+template = """
 register(
-  id='VizdoomNavigationDeepmindSmall-v0',
-  entry_point='gym_vizdoom.envs:VizdoomNavigationEnvDeepmindSmall',
+  id='{}-v0',
+  entry_point='gym_vizdoom.envs:{}',
 )
+"""
+
+GAME_NAMES = GAMES.keys()
+for game_name in GAME_NAMES:
+  exec(template.format(game_name, game_name))

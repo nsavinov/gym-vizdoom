@@ -50,7 +50,7 @@ class NavigationTestGame(NavigationGame):
     if self.goal_index == 0:
       self.map_index = (self.map_index + 1) % len(self.maps)
 
-  def get_exploration_frame(self):
+  def get_exploration_frame(self, done):
     return self.exploration_frames[self.step_counter]
 
   def is_done(self):
@@ -64,8 +64,12 @@ class NavigationTestGame(NavigationGame):
         return True
     return False
 
-  def get_goal_frame(self):
+  def get_navigation_goal_frame(self):
     return self.goal_frames[self.goal_index]
+
+  def new_episode(self):
+    self.game.set_doom_map(self.maps[self.map_index])
+    self.game.new_episode()
 
   def load_exploration_frames(self):
     self.vizdoom_setup(self.wad)

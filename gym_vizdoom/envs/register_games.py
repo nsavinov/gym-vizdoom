@@ -1,8 +1,9 @@
 from gym_vizdoom.envs.navigation_test_game import NavigationTestGame
 from gym_vizdoom.envs.navigation_train_game import NavigationTrainGame
+from gym_vizdoom.envs.exploration_train_game import ExplorationTrainGame
 
-NAVIGATION_GAMES = {}
-NAVIGATION_GAMES['deepmind_small'] = \
+GAMES = {}
+GAMES['VizdoomNavigationTestDeepmindSmall'] = \
     NavigationTestGame(
         dir='Test/deepmind_small/',
         wad='deepmind_small.wad_manymaps_test.wad',
@@ -16,7 +17,7 @@ NAVIGATION_GAMES['deepmind_small'] = \
                         (320.0, -64.0),
                         (192.0, 64.0)],
         box=[-512.0, -384.0, 768.0, 256.0])
-NAVIGATION_GAMES['deepmind_small_dm'] = \
+GAMES['VizdoomNavigationTestDeepmindSmallDm'] = \
     NavigationTestGame(
         dir='Test/deepmind_small_dm/',
         wad='deepmind_small.wad_manymaps_test.wad',
@@ -30,7 +31,7 @@ NAVIGATION_GAMES['deepmind_small_dm'] = \
                         (320.0, -64.0),
                         (192.0, 64.0)],
         box=[-512.0, -384.0, 768.0, 256.0])
-NAVIGATION_GAMES['deepmind_small_autoexplore'] = \
+GAMES['VizdoomNavigationTestDeepmindSmallAutoexplore'] = \
     NavigationTestGame(
         dir='Test/deepmind_small_autoexplore/',
         wad='deepmind_small.wad_manymaps_test.wad',
@@ -44,7 +45,7 @@ NAVIGATION_GAMES['deepmind_small_autoexplore'] = \
                         (320.0, -64.0),
                         (192.0, 64.0)],
         box=[-512.0, -384.0, 768.0, 256.0])
-NAVIGATION_GAMES['open_space_five'] = \
+GAMES['VizdoomNavigationTestOpenSpaceFive'] = \
     NavigationTestGame(
         dir='Test/open_space_five/',
         wad='open_space_five.wad_manymaps_test.wad',
@@ -58,7 +59,7 @@ NAVIGATION_GAMES['open_space_five'] = \
                         (832.0, 128.0),
                         (1728.0, 1152.0)],
         box=[0.0, 0.0, 1856.0, 1856.0])
-NAVIGATION_GAMES['star_maze'] = \
+GAMES['VizdoomNavigationTestStarMaze'] = \
     NavigationTestGame(
         dir='Test/star_maze/',
         wad='star_maze.wad_manymaps_test.wad',
@@ -72,7 +73,7 @@ NAVIGATION_GAMES['star_maze'] = \
                         (736.0, -320.0),
                         (544.0, 768.0)],
         box=[-928.0, -1088.0, 1472.0, 864.0])
-NAVIGATION_GAMES['office1'] = \
+GAMES['VizdoomNavigationTestOffice1'] = \
     NavigationTestGame(
         dir='Test/office1/',
         wad='office1.wad_manymaps_test.wad',
@@ -86,7 +87,7 @@ NAVIGATION_GAMES['office1'] = \
                         (960.0, -64.0),
                         (832.0, -576.0)],
         box=[-384.0, -640.0, 1280.0, 256.0])
-NAVIGATION_GAMES['office1_dm'] = \
+GAMES['VizdoomNavigationTestOffice1Dm'] = \
     NavigationTestGame(
         dir='Test/office1_dm/',
         wad='office1.wad_manymaps_test.wad',
@@ -100,7 +101,7 @@ NAVIGATION_GAMES['office1_dm'] = \
                         (960.0, -64.0),
                         (832.0, -576.0)],
         box=[-384.0, -640.0, 1280.0, 256.0])
-NAVIGATION_GAMES['office1_autoexplore'] = \
+GAMES['VizdoomNavigationTestOffice1Autoexplore'] = \
     NavigationTestGame(
         dir='Test/office1_autoexplore/',
         wad='office1.wad_manymaps_test.wad',
@@ -114,7 +115,7 @@ NAVIGATION_GAMES['office1_autoexplore'] = \
                         (960.0, -64.0),
                         (832.0, -576.0)],
         box=[-384.0, -640.0, 1280.0, 256.0])
-NAVIGATION_GAMES['columns'] = \
+GAMES['VizdoomNavigationTestColumns'] = \
     NavigationTestGame(
         dir='Test/columns/',
         wad='columns.wad_manymaps_test.wad',
@@ -128,7 +129,7 @@ NAVIGATION_GAMES['columns'] = \
                         (256.0, 320.0),
                         (768.0, -448.0)],
         box=[-704.0, -512.0, 832.0, 384.0])
-NAVIGATION_GAMES['columns_dm'] = \
+GAMES['VizdoomNavigationTestColumnsDm'] = \
     NavigationTestGame(
         dir='Test/columns_dm/',
         wad='columns.wad_manymaps_test.wad',
@@ -142,7 +143,7 @@ NAVIGATION_GAMES['columns_dm'] = \
                         (256.0, 320.0),
                         (768.0, -448.0)],
         box=[-704.0, -512.0, 832.0, 384.0])
-NAVIGATION_GAMES['columns_autoexplore'] = \
+GAMES['VizdoomNavigationTestColumnsAutoexplore'] = \
     NavigationTestGame(
         dir='Test/columns_autoexplore/',
         wad='columns.wad_manymaps_test.wad',
@@ -156,7 +157,7 @@ NAVIGATION_GAMES['columns_autoexplore'] = \
                         (256.0, 320.0),
                         (768.0, -448.0)],
         box=[-704.0, -512.0, 832.0, 384.0])
-NAVIGATION_GAMES['office2'] = \
+GAMES['VizdoomNavigationTestOffice2'] = \
     NavigationTestGame(
         dir='Test/office2/',
         wad='office2.wad_manymaps_test.wad',
@@ -170,7 +171,7 @@ NAVIGATION_GAMES['office2'] = \
                         (352.0, -480.0),
                         (768.0, 32.0)],
         box=[-576.0, -640.0, 832.0, 320.0])
-NAVIGATION_GAMES['topological_star_easier'] = \
+GAMES['VizdoomNavigationTestTopologicalStarEasier'] = \
     NavigationTestGame(
         dir='Test/topological_star_easier/',
         wad='topological_star_easier.wad_manymaps_test.wad',
@@ -184,7 +185,7 @@ NAVIGATION_GAMES['topological_star_easier'] = \
                         (960.0, -384.0),
                         (960.0, 128.0)],
         box=[-896.0, -448.0, 1024.0, 576.0])
-NAVIGATION_GAMES['open_space_two'] = \
+GAMES['VizdoomNavigationValOpenSpaceTwo'] = \
     NavigationTestGame(
         dir='Val/open_space_two/',
         wad='open_space_two.wad_manymaps_test.wad',
@@ -198,7 +199,7 @@ NAVIGATION_GAMES['open_space_two'] = \
                         (128.0, 1728.0),
                         (128.0, 128.0)],
         box=[0.0, 0.0, 1856.0, 1856.0])
-NAVIGATION_GAMES['branching'] = \
+GAMES['VizdoomNavigationValBranching'] = \
     NavigationTestGame(
         dir='Val/branching/',
         wad='branching.wad_manymaps_test.wad',
@@ -212,7 +213,7 @@ NAVIGATION_GAMES['branching'] = \
                         (320.0, -64.0),
                         (448.0, -320.0)],
         box=[-256.0, -768.0, 1024.0, 512.0])
-NAVIGATION_GAMES['deepmind_large'] = \
+GAMES['VizdoomNavigationValDeepmindLarge'] = \
     NavigationTestGame(
         dir='Val/deepmind_large/',
         wad='deepmind_large.wad_manymaps_test.wad',
@@ -226,7 +227,7 @@ NAVIGATION_GAMES['deepmind_large'] = \
                         (320.0, -192.0),
                         (704.0, -832.0)],
         box=[-640.0, -1024.0, 1280.0, 128.0])
-NAVIGATION_GAMES['deepmind_large_dm'] = \
+GAMES['VizdoomNavigationValDeepmindLargeDm'] = \
     NavigationTestGame(
         dir='Val/deepmind_large_dm/',
         wad='deepmind_large.wad_manymaps_test.wad',
@@ -240,6 +241,25 @@ NAVIGATION_GAMES['deepmind_large_dm'] = \
                         (320.0, -192.0),
                         (704.0, -832.0)],
         box=[-640.0, -1024.0, 1280.0, 128.0])
-
-def register_navigation_games():
-  return NAVIGATION_GAMES
+GAMES['VizdoomNavigationTrain'] = \
+  NavigationTrainGame(
+    dir='Train/',
+    wad='D3_exploration_train.wad_manymaps.wad_navigation.wad',
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
+# goal_wad is excessive, given for historical reasons
+GAMES['VizdoomExplorationTrain'] = \
+  ExplorationTrainGame(
+    dir='Train/',
+    wad='D3_exploration_train.wad_manymaps.wad_exploration.wad',
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
+GAMES['VizdoomNavigationTrainDm'] = \
+  NavigationTrainGame(
+    dir='Train-DM/',
+    wad='D3_exploration_train.wad_manymaps.wad_navigation.wad',
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
+# goal_wad is excessive, given for historical reasons
+GAMES['VizdoomExplorationTrainDm'] = \
+  ExplorationTrainGame(
+    dir='Train-DM/',
+    wad='D3_exploration_train.wad_manymaps.wad_exploration.wad',
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
