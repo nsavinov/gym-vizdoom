@@ -1,4 +1,3 @@
-from gym_vizdoom.envs.constants import *
 from gym_vizdoom.envs.vizdoom_navigation_env import VizdoomNavigationEnv
 
 class VizdoomNavigationEnvDeepmindSmall(VizdoomNavigationEnv):

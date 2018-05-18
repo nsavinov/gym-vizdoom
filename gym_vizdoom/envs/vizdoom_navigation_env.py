@@ -32,4 +32,3 @@ class VizdoomNavigationEnv(gym.Env):
 
   def render(self, mode='rgb_array'):
     raise NotImplementedError('Rendering is not implemented!')
-

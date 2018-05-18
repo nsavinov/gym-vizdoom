@@ -3,49 +3,25 @@ import numpy as np
 
 from vizdoom import DoomGame
 
-from gym_vizdoom.envs import (NET_HEIGHT,
-                              NET_WIDTH,
-                              NET_CHANNELS,
-                              DEFAULT_CONFIG,
-                              ACTIONS_LIST,
-                              VIZDOOM_TO_TF,
-                              REPEAT)
+from gym_vizdoom.envs.constants import (DEFAULT_CONFIG,
+                                        ACTIONS_LIST,
+                                        REPEAT,
+                                        DEFAULT_TEST_MAPS,
+                                        DEFAULT_TEST_EXPLORATION_MAP,
+                                        DEFAULT_TEST_GOAL_NAMES,
+                                        EXPLORATION_STATUS,
+                                        NAVIGATION_STATUS,
+                                        DATA_PATH,
+                                        STATE_AFTER_GAME_END,
+                                        EXPLORATION_GOAL,
+                                        MAX_STEP_NAVIGATION,
+                                        GOAL_DISTANCE_ALLOWANCE,
+                                        GOAL_EXTENDED_OBSERVATION_SHAPE)
+from gym_vizdoom.envs.util import (get_state,
+                                   get_coordinates,
+                                   load_frames_from_lmp,
+                                   load_goal_frame_from_lmp)
 
-STATE_AFTER_GAME_END = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.uint8)
-EXPLORATION_GOAL = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.uint8) - 1
-MAX_STEP_NAVIGATION = 5000 // REPEAT
-GOAL_DISTANCE_ALLOWANCE = 63
-
-DATA_PATH = 'data'
-DEFAULT_MAPS = ['map02', 'map03', 'map04', 'map05']
-DEFAULT_EXPLORATION_MAP = 'map06'
-DEFAULT_GOAL_NAMES = ['tall_red_pillar',
-                      'candelabra',
-                      'tall_blue_torch',
-                      'short_green_pillar']
-
-
-def get_state(game):
-  return game.get_state().screen_buffer.transpose(VIZDOOM_TO_TF)
-
-def load_frames_from_lmp(game, lmp, skip):
-  game.replay_episode(lmp)
-  frames = []
-  counter = 0
-  while not game.is_episode_finished():
-    frame = get_state(game)
-    if counter % skip == 0:
-      frames.append(frame)
-    game.advance_action()
-    counter += 1
-  return frames
-
-def load_goal_frame_from_lmp(game, lmp):
-  frames = load_frames_from_lmp(game, lmp, 1)
-  return frames[-1]
-
-EXPLORATION_STATUS = 0
-NAVIGATION_STATUS = 1
 
 class NavigationGame:
   def __init__(self,
@@ -55,10 +31,10 @@ class NavigationGame:
                goal_lmps,
                goal_locations,
                box,
-               maps=DEFAULT_MAPS,
-               exploration_map=DEFAULT_EXPLORATION_MAP,
-               goal_names=DEFAULT_GOAL_NAMES):
-    self.observation_shape = [NET_HEIGHT, NET_WIDTH, 2 * NET_CHANNELS]
+               maps=DEFAULT_TEST_MAPS,
+               exploration_map=DEFAULT_TEST_EXPLORATION_MAP,
+               goal_names=DEFAULT_TEST_GOAL_NAMES):
+    self.observation_shape = GOAL_EXTENDED_OBSERVATION_SHAPE
     self.wad = osp.join(osp.dirname(__file__), DATA_PATH, dir, wad)
     self.exploration_lmp = osp.join(osp.dirname(__file__), DATA_PATH, dir, exploration_lmp)
     self.goal_lmps = [osp.join(osp.dirname(__file__), DATA_PATH, dir, value) for value in goal_lmps]
@@ -107,19 +83,22 @@ class NavigationGame:
 
   def _get_coordinates(self, done):
     if not done:
-      return self.game.get_state().game_variables[:2]
+      return get_coordinates(self.game)
     else:
       return None
 
   def _load_exploration_frames(self):
     self._vizdoom_setup(self.wad)
-    self.exploration_frames = load_frames_from_lmp(self.game, self.exploration_lmp, REPEAT)
+    self.exploration_frames = load_frames_from_lmp(self.game,
+                                                   self.exploration_lmp,
+                                                   REPEAT)
 
   def _load_goal_frames(self):
     self.goal_frames = []
     for goal_index in range(len(self.goal_lmps)):
       self._vizdoom_setup(self.wad)
-      self.goal_frames += [load_goal_frame_from_lmp(self.game, self.goal_lmps[goal_index])]
+      self.goal_frames += [load_goal_frame_from_lmp(self.game,
+                                                    self.goal_lmps[goal_index])]
 
   def _vizdoom_setup(self, wad):
     game = DoomGame()
@@ -145,7 +124,8 @@ class NavigationGame:
   def _is_done(self):
     if self.status == NAVIGATION_STATUS and (self.step_counter >= MAX_STEP_NAVIGATION):
       return True
-    distance_to_goal = np.linalg.norm(np.array(self._get_coordinates(False)) - np.array(self.goal_locations[self.goal_index]))
+    distance_to_goal = np.linalg.norm(np.array(self._get_coordinates(False)) -
+                                      np.array(self.goal_locations[self.goal_index]))
     if self.status == EXPLORATION_STATUS and distance_to_goal <= GOAL_DISTANCE_ALLOWANCE:
       return True
     return False
