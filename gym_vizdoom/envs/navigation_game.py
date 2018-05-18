@@ -12,9 +12,9 @@ from gym_vizdoom.envs.constants import (DEFAULT_CONFIG,
                                         DATA_PATH,
                                         STATE_AFTER_GAME_END,
                                         EXPLORATION_GOAL,
-                                        MAX_STEP_NAVIGATION,
-                                        GOAL_EXTENDED_OBSERVATION_SHAPE)
-from gym_vizdoom.envs.util import get_state
+                                        GOAL_EXTENDED_OBSERVATION_SHAPE,
+                                        MAX_STEP_EXPLORATION)
+from gym_vizdoom.envs.util import get_frame
 
 class NavigationGame(ABC):
   def __init__(self,
@@ -28,9 +28,9 @@ class NavigationGame(ABC):
     self.game.set_seed(seed)
 
   def step(self, action):
-    reward = self._make_action(action)
-    done = self._is_done()
-    state = self._get_state(done)
+    reward = self.make_action(action)
+    done = self.is_done()
+    state = self.get_state(done)
     info = vars(self)
     return state, reward, done, info
 
@@ -38,75 +38,70 @@ class NavigationGame(ABC):
     self.step_counter = 0
     self.status = EXPLORATION_STATUS
     if self.just_started:
-      self._just_started_setup()
-      self._vizdoom_setup(self.wad)
+      self.class_specific_init()
+      self.vizdoom_setup(self.wad)
       self.just_started = False
     else:
-      self._running_update()
-    self._start_map()
-    state = self._get_state(done=False)
+      self.class_specific_reset()
+    self.start_map()
+    state = self.get_state(done=False)
     return state
 
-  def _start_map(self):
+  def start_map(self):
     self.game.set_doom_map(self.maps[self.map_index])
     self.game.new_episode()
 
-  def _vizdoom_setup(self, wad):
+  def vizdoom_setup(self, wad):
     game = DoomGame()
     game.load_config(DEFAULT_CONFIG)
     game.set_doom_scenario_path(wad)
     game.init()
     self.game = game
 
-  def _make_action(self, action_index):
+  def make_action(self, action_index):
     if self.status == NAVIGATION_STATUS:
       reward = self.game.make_action(ACTIONS_LIST[action_index], REPEAT)
     else:
-      reward = self._make_exploration_action(action_index)
+      reward = self.make_exploration_action(action_index)
     self.step_counter += 1
-    self._update_status()
+    self.update_status()
     return reward
 
-  def _get_state(self, done):
+  def get_state(self, done):
     if self.status == NAVIGATION_STATUS:
-      state = self._get_navigation_state(done)
+      frame = get_frame(self.game) if not done else STATE_AFTER_GAME_END
+      goal_frame = self.get_goal_frame()
     else:
-      state = self._get_exploration_state(done)
+      frame = self.get_exploration_frame()
+      goal_frame = EXPLORATION_GOAL
+    state = np.concatenate([frame, goal_frame], axis=2)
     return state
 
-  def _get_navigation_state(self, done):
-    frame = get_state(self.game) if not done else STATE_AFTER_GAME_END
-    goal_frame = self._get_goal_frame()
-    return np.concatenate([frame, goal_frame], axis=2)
+  def update_status(self):
+    if self.status == EXPLORATION_STATUS and self.step_counter >= MAX_STEP_EXPLORATION:
+      self.status = NAVIGATION_STATUS
+      self.step_counter = 0
 
   @abstractmethod
-  def _make_exploration_action(self, action_index):
+  def make_exploration_action(self, action_index):
     pass
 
   @abstractmethod
-  def _just_started_setup(self):
+  def class_specific_init(self):
     pass
 
   @abstractmethod
-  def _running_update(self):
+  def class_specific_reset(self):
     pass
 
   @abstractmethod
-  def _load_goal_frames(self):
+  def get_exploration_frame(self, done):
     pass
 
   @abstractmethod
-  def _get_exploration_state(self, done):
+  def is_done(self):
     pass
 
   @abstractmethod
-  def _is_done(self):
-    pass
-
-  @abstractmethod
-  def _update_status(self):
-    pass
-
-  @abstractmethod
-  def _get_goal_frame(self):
+  def get_goal_frame(self):
     pass
