@@ -11,7 +11,3 @@ class {}(VizdoomEnv):
 GAME_NAMES = GAMES.keys()
 for game_name in GAME_NAMES:
   exec(template.format(game_name, game_name, game_name))
-
-# class VizdoomNavigationTestDeepmindSmall(VizdoomEnv):
-#   def __init__(self):
-#     super(VizdoomNavigationTestDeepmindSmall, self).__init__('deepmind_small')

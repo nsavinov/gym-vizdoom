@@ -15,7 +15,6 @@ TURN_RIGHT = [0, 0, 0, 0, 0, 0, 1]
 ACTIONS_LIST = [MOVE_FORWARD, TURN_LEFT, TURN_RIGHT]
 ACTION_NAMES = ['MOVE_FORWARD', 'TURN_LEFT', 'TURN_RIGHT']
 
-WAIT_BEFORE_START_TICS = 140
 VIZDOOM_TO_TF = [1, 2, 0]
 ACTION_CLASSES = len(ACTIONS_LIST)
 MIN_RANDOM_TEXTURE_MAP_INDEX = 2
@@ -28,7 +27,6 @@ NET_CHANNELS = 3
 # general
 DIR = osp.dirname(__file__)
 DEFAULT_CONFIG = osp.join(DIR, 'data', 'default.cfg')
-TRAIN_WAD = osp.join(DIR, 'Train', 'D3_exploration_train.wad_manymaps.wad_exploration.wad')
 
 # test envs
 STATE_AFTER_GAME_END = np.zeros((NET_HEIGHT, NET_WIDTH, NET_CHANNELS), dtype=np.uint8)
