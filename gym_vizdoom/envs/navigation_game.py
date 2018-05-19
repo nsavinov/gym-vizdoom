@@ -13,7 +13,7 @@ from gym_vizdoom.envs.constants import (DEFAULT_CONFIG,
                                         NAVIGATION_STATUS,
                                         DATA_PATH,
                                         STATE_AFTER_GAME_END,
-                                        EXPLORATION_GOAL,
+                                        EXPLORATION_GOAL_FRAME,
                                         GOAL_EXTENDED_OBSERVATION_SHAPE,
                                         MAX_STEP_EXPLORATION)
 from gym_vizdoom.envs.util import real_get_frame
@@ -61,25 +61,31 @@ class NavigationGame(ABC):
 
   def make_action(self, action_index):
     if self.status == NAVIGATION_STATUS:
-      reward = self.real_make_action(action_index)
+      reward = self.make_navigation_action(action_index)
     else:
       reward = self.make_exploration_action(action_index)
     self.step_counter += 1
     self.update_status()
     return reward
 
+  def make_navigation_action(self, action_index):
+    return self.real_make_action(action_index)
+
   def real_make_action(self, action_index):
     return self.game.make_action(ACTIONS_LIST[action_index], REPEAT)
 
   def get_state(self, done):
     if self.status == NAVIGATION_STATUS:
-      frame = real_get_frame(self.game) if not done else STATE_AFTER_GAME_END
+      frame = self.get_navigation_frame(done)
       goal_frame = self.get_navigation_goal_frame()
     else:
       frame = self.get_exploration_frame(done)
-      goal_frame = EXPLORATION_GOAL
+      goal_frame = EXPLORATION_GOAL_FRAME
     state = np.concatenate([frame, goal_frame], axis=2)
     return state
+
+  def get_navigation_frame(self, done):
+    return real_get_frame(self.game) if not done else STATE_AFTER_GAME_END
 
   def update_status(self):
     if self.status == EXPLORATION_STATUS and self.step_counter >= MAX_STEP_EXPLORATION:
