@@ -2,21 +2,22 @@ import gym
 from gym_vizdoom import (LIST_OF_ENVS, EXPLORATION_GOAL_FRAME)
 from gym_vizdoom.logging.navigation_video_writer import NavigationVideoWriter
 
+def split_current_goal(observation):
+  c = observation.shape[2] // 2
+  current = observation[..., :c]
+  goal = observation[..., c:]
+  return current, goal
+
 def test(env, video_writer, number_of_episodes):
   for _ in range(number_of_episodes):
     observation = env.reset()
-    c = observation.shape[2] // 2
-    current = observation[..., :c]
-    goal = observation[..., c:]
-    video_writer.write(current, goal)
+    video_writer.write(*split_current_goal(observation))
     step = 0
     while True:
       step += 1
       action = env.action_space.sample()
       observation, reward, done, info = env.step(action)
-      c = observation.shape[2] // 2
-      current = observation[..., :c]
-      goal = observation[..., c:]
+      current, goal = split_current_goal(observation)
       video_writer.write(current, goal)
       print('step:', step)
       print('reward:', reward)
