@@ -1,5 +1,5 @@
 import gym
-from gym_vizdoom import (LIST_OF_ENVS, EXPLORATION_GOAL_FRAME)
+from gym_vizdoom import (LIST_OF_ENVS, EXPLORATION_GOAL_FRAME, GOAL_REACHING_REWARD)
 from gym_vizdoom.logging.navigation_video_writer import NavigationVideoWriter
 
 def split_current_goal(observation):
@@ -21,6 +21,7 @@ def test(env, video_writer, number_of_episodes):
       video_writer.write(current, goal)
       print('step:', step)
       print('reward:', reward)
+      print('Goal reached?', reward == GOAL_REACHING_REWARD)
       print('status:', 'exploration' if (goal == EXPLORATION_GOAL_FRAME).all() else 'navigation')
       if done:
         print('Episode finished!')
