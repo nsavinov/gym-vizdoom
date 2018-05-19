@@ -15,13 +15,16 @@ from gym_vizdoom.envs.constants import (DEFAULT_CONFIG,
                                         STATE_AFTER_GAME_END,
                                         EXPLORATION_GOAL_FRAME,
                                         GOAL_EXTENDED_OBSERVATION_SHAPE,
-                                        MAX_STEP_EXPLORATION)
+                                        MAX_STEP_EXPLORATION,
+                                        STAY_IDLE)
 from gym_vizdoom.envs.util import real_get_frame
 
 class NavigationGame(ABC):
   def __init__(self,
                dir,
-               wad):
+               wad,
+               initial_skip=0):
+    self.initial_skip = initial_skip // REPEAT
     self.observation_shape = GOAL_EXTENDED_OBSERVATION_SHAPE
     self.wad = osp.join(osp.dirname(__file__), DATA_PATH, dir, wad)
     self.just_started = True
@@ -49,8 +52,13 @@ class NavigationGame(ABC):
     else:
       self.class_specific_reset()
     self.new_episode()
+    for _ in range(self.initial_skip):
+      self.stay_idle()
     state = self.get_state(done=False)
     return state
+
+  def stay_idle(self):
+    self.game.make_action(STAY_IDLE, REPEAT)
 
   def vizdoom_setup(self, wad):
     game = DoomGame()

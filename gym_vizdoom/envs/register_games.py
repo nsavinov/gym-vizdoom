@@ -245,21 +245,25 @@ GAMES['VizdoomNavigationTrain'] = \
   NavigationTrainGame(
     dir='Train/',
     wad='D3_exploration_train.wad_manymaps.wad_navigation.wad',
-    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad',
+    initial_skip=16)
 # goal_wad is excessive, given for historical reasons
 GAMES['VizdoomExplorationTrain'] = \
   ExplorationTrainGame(
     dir='Train/',
     wad='D3_exploration_train.wad_manymaps.wad_exploration.wad',
-    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad',
+    initial_skip=16)
 GAMES['VizdoomNavigationTrainDm'] = \
   NavigationTrainGame(
     dir='Train-DM/',
     wad='D3_exploration_train.wad_manymaps.wad_navigation.wad',
-    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad',
+    initial_skip=16)
 # goal_wad is excessive, given for historical reasons
 GAMES['VizdoomExplorationTrainDm'] = \
   ExplorationTrainGame(
     dir='Train-DM/',
     wad='D3_exploration_train.wad_manymaps.wad_exploration.wad',
-    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad')
+    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad',
+    initial_skip=16)

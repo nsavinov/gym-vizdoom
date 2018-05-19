@@ -14,9 +14,10 @@ class NavigationTrainGame(NavigationGame):
   def __init__(self,
                dir,
                wad,
-               goal_wad):
+               goal_wad,
+               initial_skip):
     self.goal_wad = osp.join(osp.dirname(__file__), DATA_PATH, dir, goal_wad)
-    super(NavigationTrainGame, self).__init__(dir=dir, wad=wad)
+    super(NavigationTrainGame, self).__init__(dir=dir, wad=wad, initial_skip=initial_skip)
 
   def class_specific_init(self):
     self.maps = [MAP_NAME_TEMPLATE % index for index in range(MIN_RANDOM_TEXTURE_MAP_INDEX,
