@@ -45,6 +45,9 @@ class NavigationTrainGame(NavigationGame):
   def is_done(self):
     return self.game.is_episode_finished()
 
+  def reward_shaping(self, reward):
+    return reward
+
   def new_episode(self):
     self.game.set_doom_map(self.maps[self.map_index])
     self.game.new_episode()

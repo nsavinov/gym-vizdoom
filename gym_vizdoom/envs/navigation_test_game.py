@@ -10,7 +10,8 @@ from gym_vizdoom.envs.constants import (DEFAULT_TEST_MAPS,
                                         GOAL_DISTANCE_ALLOWANCE,
                                         REPEAT,
                                         MAX_STEP_EXPLORATION,
-                                        EXPLORATION_STATUS)
+                                        EXPLORATION_STATUS,
+                                        GOAL_REACHING_REWARD)
 from gym_vizdoom.envs.util import (get_coordinates,
                                    load_frames_from_lmp,
                                    load_goal_frame_from_lmp)
@@ -54,16 +55,26 @@ class NavigationTestGame(NavigationGame):
   def get_exploration_frame(self, done):
     return self.exploration_frames[self.step_counter]
 
+  def check_goal_reached(self):
+    distance_to_goal = np.linalg.norm(np.array(get_coordinates(self.game)) -
+                                      np.array(self.goal_locations[self.goal_index]))
+    if distance_to_goal <= GOAL_DISTANCE_ALLOWANCE:
+      return True
+    return False
+
   def is_done(self):
     if self.status == NAVIGATION_STATUS:
       if self.step_counter >= MAX_STEP_NAVIGATION:
         return True
-      distance_to_goal = np.linalg.norm(np.array(get_coordinates(self.game)) -
-                                        np.array(self.goal_locations[self.goal_index]))
-      if distance_to_goal <= GOAL_DISTANCE_ALLOWANCE:
-        print('Goal reached!')
-        return True
+      return self.check_goal_reached()
     return False
+
+  def reward_shaping(self, reward):
+    if self.status == NAVIGATION_STATUS and self.check_goal_reached():
+      return GOAL_REACHING_REWARD
+    else:
+      return 0
+
 
   def get_navigation_goal_frame(self):
     return self.goal_frames[self.goal_index]

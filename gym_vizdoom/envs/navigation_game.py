@@ -40,7 +40,7 @@ class NavigationGame(ABC):
     done = self.is_done()
     state = self.get_state(done)
     info = vars(self)
-    return state, reward, done, info
+    return state, self.reward_shaping(reward), done, info
 
   def reset(self):
     self.step_counter = 0
@@ -99,6 +99,10 @@ class NavigationGame(ABC):
     if self.status == EXPLORATION_STATUS and self.step_counter >= MAX_STEP_EXPLORATION:
       self.status = NAVIGATION_STATUS
       self.step_counter = 0
+
+  @abstractmethod
+  def reward_shaping(self, reward):
+    pass
 
   @abstractmethod
   def class_specific_init(self):

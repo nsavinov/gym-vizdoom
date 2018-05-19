@@ -1,5 +1,5 @@
 from gym.envs.registration import register
-from gym_vizdoom.envs.register_games import GAMES
+from gym_vizdoom.envs import GAME_NAMES
 
 template = """
 register(
@@ -8,8 +8,11 @@ register(
 )
 """
 
-GAME_NAMES = GAMES.keys()
 for game_name in GAME_NAMES:
   exec(template.format(game_name, game_name))
 
 LIST_OF_ENVS = [name + '-v0' for name in GAME_NAMES]
+from gym_vizdoom.envs.constants import (GOAL_REACHING_REWARD,
+                                        EXPLORATION_GOAL_FRAME,
+                                        EXPLORATION_STATUS,
+                                        NAVIGATION_STATUS)

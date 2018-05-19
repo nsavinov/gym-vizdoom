@@ -1,6 +1,5 @@
 from gym_vizdoom.envs.vizdoom_env import VizdoomEnv
 
-from gym_vizdoom.envs.constants import EXPLORATION_GOAL_FRAME
 from gym_vizdoom.envs.register_games import GAMES
 
 template = """
