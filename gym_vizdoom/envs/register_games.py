@@ -33,7 +33,7 @@ GAMES['VizdoomNavigationTestDeepmindSmallDm'] = \
         box=[-512.0, -384.0, 768.0, 256.0])
 GAMES['VizdoomNavigationTestDeepmindSmallAutoexplore'] = \
     NavigationTestGame(
-        dir='Test/deepmind_small_autoexplore/',
+        dir='Test/deepmind_small_ae/',
         wad='deepmind_small.wad_manymaps_test.wad',
         exploration_lmp='deepmind_small.lmp',
         goal_lmps=['deepmind_small_tall_red_pillar.lmp',
@@ -103,7 +103,7 @@ GAMES['VizdoomNavigationTestOffice1Dm'] = \
         box=[-384.0, -640.0, 1280.0, 256.0])
 GAMES['VizdoomNavigationTestOffice1Autoexplore'] = \
     NavigationTestGame(
-        dir='Test/office1_autoexplore/',
+        dir='Test/office1_ae/',
         wad='office1.wad_manymaps_test.wad',
         exploration_lmp='office1.lmp',
         goal_lmps=['office1_tall_red_pillar.lmp',
@@ -145,7 +145,7 @@ GAMES['VizdoomNavigationTestColumnsDm'] = \
         box=[-704.0, -512.0, 832.0, 384.0])
 GAMES['VizdoomNavigationTestColumnsAutoexplore'] = \
     NavigationTestGame(
-        dir='Test/columns_autoexplore/',
+        dir='Test/columns_ae/',
         wad='columns.wad_manymaps_test.wad',
         exploration_lmp='columns.lmp',
         goal_lmps=['columns_tall_red_pillar.lmp',
