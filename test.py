@@ -21,7 +21,7 @@ def test(env, video_writer, number_of_episodes):
       video_writer.write(current, goal)
       print('step:', step)
       print('reward:', reward)
-      print('status:', 'exploration' if goal == EXPLORATION_GOAL_FRAME else 'navigation')
+      print('status:', 'exploration' if (goal == EXPLORATION_GOAL_FRAME).all() else 'navigation')
       if done:
         print('Episode finished!')
         break
