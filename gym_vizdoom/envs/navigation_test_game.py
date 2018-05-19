@@ -9,7 +9,8 @@ from gym_vizdoom.envs.constants import (DEFAULT_TEST_MAPS,
                                         MAX_STEP_NAVIGATION,
                                         GOAL_DISTANCE_ALLOWANCE,
                                         REPEAT,
-                                        MAX_STEP_EXPLORATION)
+                                        MAX_STEP_EXPLORATION,
+                                        EXPLORATION_STATUS)
 from gym_vizdoom.envs.util import (get_coordinates,
                                    load_frames_from_lmp,
                                    load_goal_frame_from_lmp)
@@ -76,7 +77,7 @@ class NavigationTestGame(NavigationGame):
     self.exploration_frames = load_frames_from_lmp(self.game,
                                                    self.exploration_lmp,
                                                    REPEAT)
-    assert len(self.exploration_frames) >= MAX_STEP_EXPLORATION
+    # assert len(self.exploration_frames) >= MAX_STEP_EXPLORATION
 
   def load_goal_frames(self):
     self.goal_frames = []
@@ -84,3 +85,9 @@ class NavigationTestGame(NavigationGame):
       self.vizdoom_setup(self.wad)
       self.goal_frames += [load_goal_frame_from_lmp(self.game,
                                                     self.goal_lmps[goal_index])]
+
+  def update_status(self):
+    if self.status == EXPLORATION_STATUS and (self.step_counter >= MAX_STEP_EXPLORATION or
+                                              self.step_counter >= len(self.exploration_frames)):
+      self.status = NAVIGATION_STATUS
+      self.step_counter = 0

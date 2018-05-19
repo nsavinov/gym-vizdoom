@@ -173,13 +173,13 @@ GAMES['VizdoomNavigationTestOffice2'] = \
         box=[-576.0, -640.0, 832.0, 320.0])
 GAMES['VizdoomNavigationTestTopologicalStarEasier'] = \
     NavigationTestGame(
-        dir='Test/topological_star_easier/',
-        wad='topological_star_easier.wad_manymaps_test.wad',
-        exploration_lmp='topological_star_easier.lmp',
-        goal_lmps=['topological_star_easier_tall_red_pillar.lmp',
-                   'topological_star_easier_candelabra.lmp',
-                   'topological_star_easier_tall_blue_torch.lmp',
-                   'topological_star_easier_short_green_pillar.lmp'],
+        dir='Test/top_star_easier/',
+        wad='top_star_easier.wad_manymaps_test.wad',
+        exploration_lmp='top_star_easier.lmp',
+        goal_lmps=['top_star_easier_tall_red_pillar.lmp',
+                   'top_star_easier_candelabra.lmp',
+                   'top_star_easier_tall_blue_torch.lmp',
+                   'top_star_easier_short_green_pillar.lmp'],
         goal_locations=[(-832.0, -384.0),
                         (-704.0, -128.0),
                         (960.0, -384.0),
@@ -251,19 +251,6 @@ GAMES['VizdoomNavigationTrain'] = \
 GAMES['VizdoomExplorationTrain'] = \
   ExplorationTrainGame(
     dir='Train/',
-    wad='D3_exploration_train.wad_manymaps.wad_exploration.wad',
-    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad',
-    initial_skip=16)
-GAMES['VizdoomNavigationTrainDm'] = \
-  NavigationTrainGame(
-    dir='Train-DM/',
-    wad='D3_exploration_train.wad_manymaps.wad_navigation.wad',
-    goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad',
-    initial_skip=16)
-# goal_wad is excessive, given for historical reasons
-GAMES['VizdoomExplorationTrainDm'] = \
-  ExplorationTrainGame(
-    dir='Train-DM/',
     wad='D3_exploration_train.wad_manymaps.wad_exploration.wad',
     goal_wad='D3_exploration_train.wad_manymaps.wad_snapshot.wad',
     initial_skip=16)

@@ -11,3 +11,5 @@ register(
 GAME_NAMES = GAMES.keys()
 for game_name in GAME_NAMES:
   exec(template.format(game_name, game_name))
+
+LIST_OF_ENVS = [name + '-v0' for name in GAME_NAMES]
