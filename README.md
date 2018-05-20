@@ -40,4 +40,4 @@ Val-3 VizdoomNavigationValDeepmindLarge-v0
 ```
 For some of those envs, there are additional versions (used in the supplementary of the paper). Those containing "Dm" in the name use homogenious textures with sparse landmarks, "Autoexplore" -- use automatic algorithm for providing exploration sequence (for the default envs exploration sequences were provided by humans). 
 # Caveats
-Long file names cause Vizdoom to hang (in particular, replay_episode method in this code). Try to install this repo as close as possible to the root.
+Long file paths cause Vizdoom to hang (in particular, replay_episode method in this code). Try to install this repo as close as possible to the root.
