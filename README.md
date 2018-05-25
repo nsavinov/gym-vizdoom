@@ -23,7 +23,7 @@ First 2500 steps the same as exploration. After that, 1250 steps for navigation.
 VizdoomNavigationTrain-v0
 ```
 ## Test/Val navigation
-Same as train, but during first 2500 steps (a bit less for some envs) the agent cannot move, it only observes the exploration sequence provided to it. Afterwards, navigation as usual. Also, the rewards all always 0 besides when it reaches the goal (during navigation), in which case +800. Here is how environment names in the paper map into the names in the code:
+Same as train, but during first 2500 steps (a bit less for some envs) the agent cannot move, it only observes the exploration sequence provided to it. Afterwards, navigation as usual. Also, the rewards are always 0 besides when it reaches the goal (during navigation), in which case +800. Here is how environment names in the paper map into the names in the code:
 ```bash
 # format:
 # NAME_PAPER NAME_CODE
