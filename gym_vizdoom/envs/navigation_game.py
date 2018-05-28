@@ -43,7 +43,8 @@ class NavigationGame(ABC):
     reward = self.make_action(action)
     done = self.is_done()
     state = self.get_state(done)
-    info = vars(self)
+    info = vars(self).copy()
+    info.pop('game', None) # infos for openai baselines need to be picklable, game is not
     return state, self.reward_shaping(reward), done, info
 
   def reset(self):
