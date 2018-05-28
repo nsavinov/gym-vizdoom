@@ -28,10 +28,14 @@ class NavigationGame(ABC):
     self.observation_shape = GOAL_EXTENDED_OBSERVATION_SHAPE
     self.wad = osp.join(osp.dirname(__file__), DATA_PATH, dir, wad)
     self.just_started = True
+    self.just_started_seed = None
 
   def seed(self, seed):
     if seed is not None:
-      self.game.set_seed(seed)
+      if not self.just_started:
+        self.game.set_seed(seed)
+      else:
+        self.just_started_seed = seed
     self.np_random, seed = seeding.np_random(seed)
     return [seed]
 
@@ -48,6 +52,8 @@ class NavigationGame(ABC):
     if self.just_started:
       self.class_specific_init()
       self.vizdoom_setup(self.wad)
+      if self.just_started_seed:
+        self.game.set_seed(self.just_started_seed)
       self.just_started = False
     else:
       self.class_specific_reset()
