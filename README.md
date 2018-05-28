@@ -23,7 +23,7 @@ First 2500 steps the same as exploration. After that, 1250 steps for navigation.
 VizdoomNavigationTrain-v0
 ```
 ## Test/Val navigation
-Same as train, but during first 2500 steps (a bit less for some envs) the agent cannot move, it only observes the exploration sequence provided to it. Afterwards, navigation as usual. Also, the rewards all always 0 besides when it reaches the goal (during navigation), in which case +800. Here is how environment names in the paper map into the names in the code:
+Same as train, but during first 2500 steps (a bit less for some envs) the agent cannot move, it only observes the exploration sequence provided to it. Afterwards, navigation as usual. Also, the rewards are always 0 besides when it reaches the goal (during navigation), in which case +800. Here is how environment names in the paper map into the names in the code:
 ```bash
 # format:
 # NAME_PAPER NAME_CODE
@@ -40,4 +40,4 @@ Val-3 VizdoomNavigationValDeepmindLarge-v0
 ```
 For some of those envs, there are additional versions (used in the supplementary of the paper). Those containing "Dm" in the name use homogenious textures with sparse landmarks, "Autoexplore" -- use automatic algorithm for providing exploration sequence (for the default envs exploration sequences were provided by humans). 
 # Caveats
-Long file names cause Vizdoom to hang (in particular, replay_episode method in this code). Try to install this repo as close as possible to the root.
+Long file paths cause Vizdoom to hang (in particular, replay_episode method in this code). Try to install this repo as close as possible to the root.
